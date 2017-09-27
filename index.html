@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+</head>
+<body>
+	<div>
+		需要生成的注数：<input type="text" id = "ipt"><button id = "btn">开始筛选</button>
+		筛选的结果为：<span id = "opt"></span>
+	</div>
+	<script>
+	/*----------------------------------------------*/
+		function create(){
+			var arr  = [];
+			var arrb = [];
+			var n = 0;
+			while(arr.length<5){
+				n = Math.ceil(Math.random()*35);
+				if(arr.indexOf(n) == -1 && n != 0){
+					arr.push(n);
+				}
+			}
+			arr.sort(function(a,b){return a - b});
+			while(arrb.length<2){
+				n = Math.ceil(Math.random()*12);
+				if(arrb.indexOf(n) == -1 && n != 0){
+					arrb.push(n);
+				}
+			}
+			arrb.sort(function(a,b){return a - b});
+			return arr.concat(arrb);
+
+		}
+	/*------------------------------------------------*/
+		function info(size){
+			var arr1 = [];
+			var arr2 = [];
+			var cur1 = [];
+			var cur2 = [];
+			var red  = [];
+			var blue = [];
+			var result = [];
+			red[0]   = 0;
+			blue[0]  = 0;
+			var num1 = new Array(36);
+			num1[0] = 0;
+			var num2 = new Array(17);
+			num2[0] = 0;
+			while(arr1.length < size){
+				 cur1 = create();
+				 cur2 = cur1.splice(5,2);
+				 arr1.push(cur1);
+				 arr2.push(cur2);
+			}
+			for(var i =0;i < arr1.length;i++){
+				for(var j = 0;j < 5;j++){
+					if(num1[arr1[i][j]]){
+						num1[arr1[i][j]]++;
+					}else{
+						num1[arr1[i][j]] = 1;
+					}
+				}
+			}
+			for(i =0;i < arr2.length;i++){
+				for(j = 0;j < 2;j++){
+					if(num2[arr2[i][j]]){
+						num2[arr2[i][j]]++;
+					}else{
+						num2[arr2[i][j]] = 1;
+					}
+				}
+			}
+			for(i = 1;i < num1.length;i++){
+				red[i] = new Object();
+				red[i].ball = i;
+				red[i].val  = num1[i];
+			}
+			for(i = 1;i < num2.length;i++){
+				blue[i] = new Object();
+				blue[i].ball = i;
+				blue[i].val  = num2[i];
+			}
+			num1.sort(function(a,b){return a - b;});
+			num2.sort(function(a,b){return a - b;});
+			for(i = 1;i < red.length;i++){
+				if(
+					red[i].val == num1[1]
+				||	red[i].val == num1[2]
+				||	red[i].val == num1[3]
+				||	red[i].val == num1[4]
+				||	red[i].val == num1[5]
+					){
+					result.push(red[i].ball);
+				}
+			}
+			result.push("||");
+			for(i = 1;i < blue.length;i++){
+				if(
+					blue[i].val == num2[1]
+				||	blue[i].val == num2[2]
+					){
+					result.push(blue[i].ball);
+				}
+			}
+			return result;
+		}
+	/*-------------------------------------------------*/
+	document.getElementById("btn").onclick = function(){
+		var a = document.getElementById("ipt").value;
+		if(a == ""){
+			alert("请输入正确的整数！");
+			return;
+		}
+		a = parseInt(a);
+		document.getElementById("opt").innerHTML = info(a).join("--");
+	}
+	</script>
+</body>
+</html>
